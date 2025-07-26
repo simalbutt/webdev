@@ -13,7 +13,7 @@ const scene = new THREE.Scene();
 const textureload = new THREE.TextureLoader();
 //cube texture loader (hdri -> cubemap)
 const cubetextloader=new THREE.CubeTextureLoader()
-cubetextloader.setPath('/texture/cubemap/')
+cubetextloader.setPath('./texture/cubemap/')
 // const backgroundtext=textureload.load('/texture/2k_stars_milky_way.jpg')
 const backcubemap=cubetextloader.load( [
   'px.png',
@@ -28,17 +28,17 @@ const backcubemap=cubetextloader.load( [
 scene.background=backcubemap
 
 //load textures
-const suntext = textureload.load("/texture/2k_sun.jpg");
+const suntext = textureload.load("./texture/2k_sun.jpg");
 // suntext.colorSpace = THREE.SRGBColorSpace
-const mercurytext = textureload.load("/texture/2k_mercury.jpg");
+const mercurytext = textureload.load("./texture/2k_mercury.jpg");
 // mercurytext.colorSpace = THREE.SRGBColorSpace
-const venustext = textureload.load("/texture/2k_venus_surface.jpg");
+const venustext = textureload.load("./texture/2k_venus_surface.jpg");
 // venustext.colorSpace = THREE.SRGBColorSpace
-const earthtext = textureload.load("/texture/2k_earth_daymap.jpg");
+const earthtext = textureload.load("./texture/2k_earth_daymap.jpg");
 // earthtext.colorSpace = THREE.SRGBColorSpace
-const marstext = textureload.load("/texture/2k_mars.jpg");
+const marstext = textureload.load("./texture/2k_mars.jpg");
 // marstext.colorSpace = THREE.SRGBColorSpace
-const moontext = textureload.load("/texture/2k_moon.jpg");
+const moontext = textureload.load("./texture/2k_moon.jpg");
 // moontext.colorSpace = THREE.SRGBColorSpace
 
 // add stuff here
