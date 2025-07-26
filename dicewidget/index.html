@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Dice Widget</title>
+    <style>
+        body {
+            margin: 0;
+            background: #111;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column-reverse;
+        }
+
+        canvas {
+            width: 150px !important;
+            height: 150px !important;
+            display: block;
+        }
+
+        #rollBtn {
+            margin-top: 50px;
+            padding: 6px 12px;
+            font-size: 16px;
+            background-color: rgb(79, 80, 85);
+            border-radius: 12px;
+            border: 0px;
+            cursor: pointer;
+        }
+    </style>
+
+    <script type="importmap">
+    {
+        "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.177.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.177.0/examples/jsm/"
+    }
+    }
+    </script>
+</head>
+
+
+<body>
+    <canvas id="diceCanvas"></canvas>
+    <button id="rollBtn">Roll Dice</button>
+
+
+
+    <script type="module" src="./main.js"></script>
+
+</body>
+
+</html>
