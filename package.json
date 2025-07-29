@@ -1,0 +1,27 @@
+{
+  "name": "devconnector",
+  "version": "1.0.0",
+  "description": "network connection for developers",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "server":"nodemon server"
+  },
+  "author": "SIMAL",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.11.0",
+    "bcryptjs": "^3.0.2",
+    "config": "^4.1.0",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "gravatar": "^1.8.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.5",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "nodeman": "^1.1.2"
+  }
+}
