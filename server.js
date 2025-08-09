@@ -1,8 +1,13 @@
 const express= require('express')
 const connectdb=require('./config/db')
 const app = express()
+const cors = require('cors');
+
+
 //connect db 
 connectdb()
+
+app.use(cors({ origin: 'http://localhost:3000' }));
 app.get('/',(req,res)=>res.send("api running"))//call api
 
 

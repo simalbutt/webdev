@@ -35,7 +35,7 @@ router.post(
       if (user) {
         return res
           .status(400)
-          .json({ error: [{ msg: 'User already exists' }] });
+          .json({ errors: [{ msg: 'User already exists' }] });
       }
       //get user gravatar
       const avatar = gravatar.url(
@@ -61,7 +61,8 @@ router.post(
       user.password = await bcrypt.hash(password, salt);
       await user.save(); //everything that return promise should have await
       //return json webtoken
-      const payload = {//data you want to store or tokenize
+      const payload = {
+        //data you want to store or tokenize
         user: {
           id: user.id,
         },
@@ -73,7 +74,7 @@ router.post(
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
-          res.json({ token });//send token bacj to user often use in authentication of login api
+          res.json({ token }); //send token bacj to user often use in authentication of login api
         }
       );
 
