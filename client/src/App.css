@@ -151,12 +151,16 @@ img {
 }
 
 .alert {
+  position: fixed;
+  top: 56px; /* same height as navbar */
+  left: 0;
+  width: 100%;
   padding: 0.8rem;
-  margin: 1rem 0;
-  opacity: 0.9;
   background: var(--light-color);
   color: #333;
+  z-index: 999; /* above page content but below navbar if needed */
 }
+
 
 .btn-primary,
 .bg-primary,

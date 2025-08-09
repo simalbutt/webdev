@@ -5,13 +5,18 @@ import Navbar from './component/layout/Navbar';
 import Landing from './component/layout/Landing';
 import Login from './component/auth/login';
 import Signup from './component/auth/signup';
+import Alert from './component/layout/alert';
+//redux
+import { Provider } from 'react-redux';
+import store from './store';
 
 const App = () => {
   return (
+    <Provider store={store}>
     <Router>
       <Fragment>
         <Navbar />
-
+        <Alert/>
         <Routes>
           {/* Landing page */}
           <Route path='/' element={<Landing />} />
@@ -21,6 +26,7 @@ const App = () => {
         </Routes>
       </Fragment>
     </Router>
+    </Provider>
   );
 };
 

@@ -1,9 +1,13 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
+import {connect } from 'react-redux'
+import { setAlert } from '../../action/alert';
+import PropTypes from 'prop-types'
+// import { useDispatch } from 'react-redux';
 // import axios from 'axios';
 import '../css/signup.css';
 
-const Signup = () => {
+const Signup = ({setAlert}) => {
   const [formdata, setFormdata] = useState({
     name: '',
     email: '',
@@ -14,7 +18,7 @@ const Signup = () => {
   const [errors, setErrors] = useState([]);
 
   const { name, email, password, password2 } = formdata;
-
+//  const dispatch = useDispatch();
   const onChange = (e) =>
     setFormdata({ ...formdata, [e.target.name]: e.target.value });
 
@@ -23,7 +27,7 @@ const Signup = () => {
     setErrors([]);
 
     if (password !== password2) {
-      setErrors([{ msg: "Passwords don't match" }]);
+      setAlert('password doesnot match', 'danger');
       return;
     }
     else{
@@ -133,5 +137,8 @@ const Signup = () => {
     </div>
   );
 };
+ Signup.prototype={
+  setAlert:PropTypes.func.isRequired,
+ }
 
-export default Signup;
+export default connect(null,{setAlert})(Signup);//first index is state , 2nd one is action
