@@ -1,13 +1,15 @@
 import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
-import {connect } from 'react-redux'
+import { Link, Navigate } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { setAlert } from '../../action/alert';
-import PropTypes from 'prop-types'
+import { registerUser } from '../../action/signupauth';
+
+import PropTypes from 'prop-types';
 // import { useDispatch } from 'react-redux';
 // import axios from 'axios';
 import '../css/signup.css';
 
-const Signup = ({setAlert}) => {
+const Signup = ({ setAlert, registerUser, isAuthanticated }) => {
   const [formdata, setFormdata] = useState({
     name: '',
     email: '',
@@ -18,7 +20,7 @@ const Signup = ({setAlert}) => {
   const [errors, setErrors] = useState([]);
 
   const { name, email, password, password2 } = formdata;
-//  const dispatch = useDispatch();
+  //  const dispatch = useDispatch();
   const onChange = (e) =>
     setFormdata({ ...formdata, [e.target.name]: e.target.value });
 
@@ -29,12 +31,10 @@ const Signup = ({setAlert}) => {
     if (password !== password2) {
       setAlert('password doesnot match', 'danger');
       return;
+    } else {
+      registerUser({ name, email, password });
     }
-    else{
-        console.log("succes")
-    }
-     
-    
+
     //connecting with backend without redux
     // const newuser = { name, email, password };
 
@@ -59,18 +59,21 @@ const Signup = ({setAlert}) => {
     // }
   };
 
+  if (isAuthanticated) {
+    return <Navigate to="/dashboard" />;
+  }
   return (
-    <div className="signup-page">
-      <div className="landing-inner">
+    <div className='signup-page'>
+      <div className='landing-inner'>
         <Fragment>
-          <h1 className="large text-primary text-center">Sign Up</h1>
-          <p className="lead text-center">
-            <i className="fas fa-user"></i> Create Your Account
+          <h1 className='large text-primary text-center'>Sign Up</h1>
+          <p className='lead text-center'>
+            <i className='fas fa-user'></i> Create Your Account
           </p>
 
           {/* Show errors if any */}
           {errors.length > 0 && (
-            <div className="error-messages">
+            <div className='error-messages'>
               {errors.map((error, idx) => (
                 <p key={idx} style={{ color: 'red' }}>
                   {error.msg}
@@ -79,66 +82,71 @@ const Signup = ({setAlert}) => {
             </div>
           )}
 
-          <form className="form" onSubmit={onSubmit}>
-            <div className="form-group">
+          <form className='form' onSubmit={onSubmit}>
+            <div className='form-group'>
               <input
-                type="text"
-                placeholder="Name"
-                name="name"
+                type='text'
+                placeholder='Name'
+                name='name'
                 value={name}
                 onChange={onChange}
-                required
+                // required
               />
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <input
-                type="email"
-                placeholder="Email Address"
-                name="email"
+                type='email'
+                placeholder='Email Address'
+                name='email'
                 value={email}
                 onChange={onChange}
-                required
+                // required
               />
-              <small className="form-text">
+              <small className='form-text'>
                 This site uses Gravatar so if you want a profile image, use a
                 Gravatar email
               </small>
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <input
-                type="password"
-                placeholder="Password"
-                name="password"
-                minLength="6"
+                type='password'
+                placeholder='Password'
+                name='password'
+                // minLength="6"
                 value={password}
                 onChange={onChange}
-                required
+                // required
               />
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <input
-                type="password"
-                placeholder="Confirm Password"
-                name="password2"
-                minLength="6"
+                type='password'
+                placeholder='Confirm Password'
+                name='password2'
+                // minLength="6"
                 value={password2}
                 onChange={onChange}
-                required
+                // required
               />
             </div>
-            <input type="submit" className="btn btn-primary" value="Register" />
+            <input type='submit' className='btn btn-primary' value='Register' />
           </form>
 
-          <p className="my-1">
-            Already have an account? <Link to="/login">Log In</Link>
+          <p className='my-1'>
+            Already have an account? <Link to='/login'>Log In</Link>
           </p>
         </Fragment>
       </div>
     </div>
   );
 };
- Signup.prototype={
-  setAlert:PropTypes.func.isRequired,
- }
+Signup.prototype = {
+  setAlert: PropTypes.func.isRequired,
+  registerUser: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+};
+const mapStateToProps = (state) => ({
+  isAuthanticated: state.auth.isAuthanticated,
+});
 
-export default connect(null,{setAlert})(Signup);//first index is state , 2nd one is action
+export default connect(mapStateToProps, { setAlert, registerUser })(Signup); //first index is state , 2nd one is action

@@ -17,7 +17,7 @@ body {
   font-family: 'Raleway', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
-  background-color: #fff;
+  /* background-color: #fff; */
   color: #333;
 }
 
@@ -150,16 +150,27 @@ img {
   color: #333;
 }
 
-.alert {
+
+.alert-container {
   position: fixed;
-  top: 56px; /* same height as navbar */
-  left: 0;
+  top: 69px; /* offset from navbar */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* space between alerts */
+  z-index: 1050;
   width: 100%;
-  padding: 0.8rem;
-  background: var(--light-color);
-  color: #333;
-  z-index: 999; /* above page content but below navbar if needed */
 }
+
+.alert {
+  min-width: 100%;
+  border-radius: 8px;
+  padding: 5px;
+}
+
+
+
 
 
 .btn-primary,
