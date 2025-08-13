@@ -6,7 +6,8 @@ import Login from './component/auth/login';
 import Signup from './component/auth/signup';
 import Alert from './component/layout/alert';
 import { Routes, Route } from 'react-router-dom';
-
+import Dashboard from './component/dashboard/dashboard';
+import PrivateRoute from './component/routing/privateroute';
 const App = () => {
   return (
     <Fragment>
@@ -16,6 +17,8 @@ const App = () => {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+       <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+
       </Routes>
     </Fragment>
   );
