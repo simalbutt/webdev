@@ -8,6 +8,10 @@ import Alert from './component/layout/alert';
 import { Routes, Route } from 'react-router-dom';
 import Dashboard from './component/dashboard/dashboard';
 import PrivateRoute from './component/routing/privateroute';
+import CreateProfile from './component/profile-form/createprofile';
+import EditProfile from './component/profile-form/Editprofile';
+import AddExperience from './component/profile-form/Addexperience';
+import AddEducation from './component/profile-form/Addeducation';
 const App = () => {
   return (
     <Fragment>
@@ -18,6 +22,11 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+       <Route path="/createprofile" element={<PrivateRoute><CreateProfile /></PrivateRoute>} />
+       <Route path="/editprofile" element={<PrivateRoute><EditProfile /></PrivateRoute>} />
+       <Route path="/addexperience" element={<PrivateRoute><AddExperience /></PrivateRoute>} />
+       <Route path="/addeducation" element={<PrivateRoute><AddEducation /></PrivateRoute>} />
+
 
       </Routes>
     </Fragment>
