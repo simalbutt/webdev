@@ -7,11 +7,15 @@ import {
   PROFILE_LOADING,
   CLEAR_PROFILE,
   DELETE_ACCOUNT,
+  GET_PROFILES,
+  GET_REPOS,
+  CLEAR_REPOS
 } from './types';
 // import { header } from 'express-validator';
 
 //get current users profile
 export const getCurrentProfile = () => async (dispatch) => {
+  dispatch({ type: CLEAR_PROFILE });
   try {
     dispatch({ type: PROFILE_LOADING });
     const res = await axios.get('/api/profile/me');
@@ -26,6 +30,75 @@ export const getCurrentProfile = () => async (dispatch) => {
     });
   }
 };
+
+
+//get all profiles
+export const getallProfile = () => async (dispatch) => {
+  try {
+    dispatch({ type: PROFILE_LOADING });
+    const res = await axios.get('/api/profile');
+    dispatch({
+      type: GET_PROFILES,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+//get profile by id
+export const getProfileById = (userid) => async (dispatch) => {
+  try {
+    dispatch({ type: PROFILE_LOADING });
+    const res = await axios.get(`/api/profile/user/${userid}`);
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+//get github repos
+export const getGithubRepos = (username) => async (dispatch) => {
+  try {
+    // Clear old repos before fetching new ones
+    dispatch({ type: CLEAR_REPOS });
+
+    const res = await axios.get(`/api/profile/github/${username}`);
+
+    dispatch({
+      type: GET_REPOS,
+      payload: res.data, // array of repos
+    });
+  } catch (err) {
+    // If user not found (404), return empty repos instead of throwing UI error
+    if (err.response && err.response.status === 404) {
+      dispatch({
+        type: GET_REPOS,
+        payload: [], // empty array
+      });
+    } else {
+      // Other errors (e.g., server down)
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: {
+          msg: err.response ? err.response.statusText : 'Server Error',
+          status: err.response ? err.response.status : 500,
+        },
+      });
+    }
+  }
+};
+
+
 
 //createprofile
 export const Createprofile =

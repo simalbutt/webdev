@@ -7,6 +7,7 @@ const { check, validationResult } = require('express-validator');
 const Profile = require('../../model/Profile');
 const User = require('../../model/User');
 const Post = require('../../model/Postmodel');
+const axios = require('axios');
 
 //@route   get api/profile/me
 //@desc    get current users profile
@@ -285,39 +286,33 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
     res.status(500).send('server error');
   }
 });
-//@route  get api/profile/github/:username
-//@desc   get user repo by username
-//@access  public
-
+// @route  GET api/profile/github/:username
+// @desc   Get user repos from GitHub
+// @access Public
 router.get('/github/:username', async (req, res) => {
   try {
-    const uri = `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`;
-
-    const options = {
-      uri,
-      method: 'GET',
-      headers: {
-        'User-Agent': 'node.js',
-      },
+    const uri = `https://api.github.com/users/${req.params.username}/repos`;
+    const params = {
+      per_page: 5,
+      sort: 'created:asc'
     };
 
-    request(options, (err, response, body) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send('Error fetching GitHub repos');
-      }
+    const headers = {
+      'User-Agent': 'node.js',
+      Authorization: `token ${process.env.GITHUB_TOKEN}`
+    };
 
-      if (response.statusCode === 200) {
-        return res.json(JSON.parse(body));
-      } else {
-        return res
-          .status(response.statusCode)
-          .json({ msg: 'GitHub profile not found' });
-      }
-    });
+    const githubResponse = await axios.get(uri, { headers, params });
+
+    res.json(githubResponse.data);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('server error');
+
+    if (err.response && err.response.status === 404) {
+      return res.status(404).json({ msg: 'GitHub profile not found' });
+    }
+
+    res.status(500).send('Server Error');
   }
 });
 

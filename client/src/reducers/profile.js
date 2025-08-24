@@ -4,6 +4,9 @@ import {
   CLEAR_PROFILE,
   UPDATE_PROFILE,
   PROFILE_LOADING,
+  GET_PROFILES,
+  GET_REPOS,
+  CLEAR_REPOS,
 } from '../action/types';
 
 const initialstate = {
@@ -19,7 +22,7 @@ export default function Profilereducer(state = initialstate, action) {
     case PROFILE_LOADING:
       return {
         ...state,
-        loading: true, 
+        loading: true,
       };
     case GET_PROFILE:
     case UPDATE_PROFILE:
@@ -28,13 +31,26 @@ export default function Profilereducer(state = initialstate, action) {
         profile: payload,
         loading: false,
       };
-
+    case GET_PROFILES:
+      return {
+        ...state,
+        profiles: payload,
+        loading: false,
+      };
+    case GET_REPOS:
+      return {
+        ...state,
+        repos: payload,
+        loading: false,
+      };
     case PROFILE_ERROR:
       return {
         ...state,
         error: payload,
         loading: false,
       };
+    case CLEAR_REPOS:
+      return { ...state, repos: [] };
     case CLEAR_PROFILE:
       return {
         ...state,

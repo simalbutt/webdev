@@ -12,6 +12,9 @@ import CreateProfile from './component/profile-form/createprofile';
 import EditProfile from './component/profile-form/Editprofile';
 import AddExperience from './component/profile-form/Addexperience';
 import AddEducation from './component/profile-form/Addeducation';
+import Profiles from './component/profile/Profiles';
+import Profile from './component/profile/Profile';
+
 const App = () => {
   return (
     <Fragment>
@@ -26,7 +29,8 @@ const App = () => {
        <Route path="/editprofile" element={<PrivateRoute><EditProfile /></PrivateRoute>} />
        <Route path="/addexperience" element={<PrivateRoute><AddExperience /></PrivateRoute>} />
        <Route path="/addeducation" element={<PrivateRoute><AddEducation /></PrivateRoute>} />
-
+       <Route path="/profiles" element={<Profiles />} />
+       <Route path="/profile/:id" element={<Profile />} />
 
       </Routes>
     </Fragment>
