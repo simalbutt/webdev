@@ -14,6 +14,8 @@ import AddExperience from './component/profile-form/Addexperience';
 import AddEducation from './component/profile-form/Addeducation';
 import Profiles from './component/profile/Profiles';
 import Profile from './component/profile/Profile';
+import Posts from './component/post/post';
+import Post from './component/post/Singlepost';
 
 const App = () => {
   return (
@@ -29,6 +31,8 @@ const App = () => {
        <Route path="/editprofile" element={<PrivateRoute><EditProfile /></PrivateRoute>} />
        <Route path="/addexperience" element={<PrivateRoute><AddExperience /></PrivateRoute>} />
        <Route path="/addeducation" element={<PrivateRoute><AddEducation /></PrivateRoute>} />
+       <Route path="/posts" element={<PrivateRoute><Posts /></PrivateRoute>} />
+       <Route path="/post/:id" element={<PrivateRoute><Post /></PrivateRoute>} />
        <Route path="/profiles" element={<Profiles />} />
        <Route path="/profile/:id" element={<Profile />} />
 

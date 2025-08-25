@@ -30,6 +30,9 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
       },
+       name: {
+      type: String,
+    },
       text: {
         type: String,
         required: true, 
@@ -43,6 +46,10 @@ const PostSchema = new Schema({
       },
     },
   ],
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model('post', PostSchema);
