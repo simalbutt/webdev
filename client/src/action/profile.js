@@ -148,7 +148,7 @@ export const addExperience = (formdata, navigate) => async (dispatch) => {
     });
     dispatch(setAlert('Experience added', 'success'));
 
-    navigate('/dashboard');
+    navigate('/Myprofile');
   } catch (err) {
     const errorMsg = err.response ? err.response.statusText : 'Server Error';
     const errorStatus = err.response ? err.response.status : 500;
@@ -177,7 +177,7 @@ export const addEducation = (formdata, navigate) => async (dispatch) => {
     });
     dispatch(setAlert('Education added', 'success'));
 
-    navigate('/dashboard');
+    navigate('/Myprofile');
   } catch (err) {
     const errorMsg = err.response ? err.response.statusText : 'Server Error';
     const errorStatus = err.response ? err.response.status : 500;

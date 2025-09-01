@@ -17,11 +17,10 @@ const Singlepost = ({ getPost, post: { post, loading } }) => {
     <Spinner />
   ) : (
     <Fragment>
-       <div style={{marginTop:'5rem'}}>
+       <div className='onepost'>
         <Link to='/posts' className='btn btn-light'>Back To Posts</Link>
 
         <Postitem post={post} showactions={false} />
-        <Commentform postId={post._id} />
         <div className="comments">
             {
                 post.comments.map(comment => (
@@ -29,6 +28,8 @@ const Singlepost = ({ getPost, post: { post, loading } }) => {
                 ))
             }
         </div>
+        <Commentform postId={post._id} />
+        
        </div>
       
     </Fragment>

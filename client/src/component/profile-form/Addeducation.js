@@ -23,6 +23,7 @@ const { school, degree, fieldOfStudy, from, to, current, description }= formData
     setFormData({ ...formData, [e.target.name]: e.target.value });
   return (
     <Fragment>
+      <div className='onepost'>
       <h1 className='large text-primary'>Add An Edcation</h1>
       <p className='lead'>
         <i className='fas fa-code-branch'></i> Add any School/Degree
@@ -33,8 +34,10 @@ const { school, degree, fieldOfStudy, from, to, current, description }= formData
         className='form'
         onSubmit={(e) => {
           e.preventDefault();
-           console.log('Submitting:', formData);
+          //  console.log('Submitting:', formData);
           addEducation(formData, navigate);
+          // navigate('/Myprofile')
+
         }}
       >
         <div className='form-group'>
@@ -110,10 +113,11 @@ const { school, degree, fieldOfStudy, from, to, current, description }= formData
           ></textarea>
         </div>
         <input type='submit' className='btn btn-primary my-1' />
-        <Link className='btn btn-light my-1' to='dashboard'>
+        <Link className='btn btn-light my-1' to='/Myprofile'>
           Go Back
         </Link>
       </form>
+      </div>
     </Fragment>
   );
 };

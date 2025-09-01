@@ -1,206 +1,195 @@
+// backend/routes/api/post.js
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
+const upload = require('../../middleware/upload'); // multer middleware
+const cloudinary = require('../../config/cloudinary');
+
 const Post = require('../../model/Postmodel');
 const User = require('../../model/User');
-const Profile = require('../../model/Profile');
 
-//@route   post api/post
-//@desc    create the post
-//@access  private
+// @route POST api/post
+// @desc  Create a post (optional image or video upload)
+// @access Private
 router.post(
   '/',
-  [auth, [check('text', 'text is required').not().isEmpty()]],
+  [auth, upload.single('media'), [check('text', 'Text is required').not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
     try {
-      const user = await User.findById(req.user.id).select('-password'); //don't want to send password back F
+      const user = await User.findById(req.user.id).select('-password');
+
+      let imageUrl = null;
+      let imageId = null;
+      let videoUrl = null;
+      let videoId = null;
+
+      if (req.file) {
+        // determine resource_type by mimetype
+        const isVideo = req.file.mimetype.startsWith('video');
+        const uploadOptions = isVideo ? { resource_type: 'video', folder: 'posts' } : { resource_type: 'image', folder: 'posts' };
+
+        const result = await cloudinary.uploader.upload(req.file.path, uploadOptions);
+
+        if (isVideo) {
+          videoUrl = result.secure_url;
+          videoId = result.public_id;
+        } else {
+          imageUrl = result.secure_url;
+          imageId = result.public_id;
+        }
+
+        // remove local temp file
+        try { fs.unlinkSync(req.file.path); } catch (e) { /* ignore */ }
+      }
+
       const newPost = new Post({
         text: req.body.text,
+        image: imageUrl,
+        imageId,
+        video: videoUrl,
+        videoId,
         name: user.name,
         avatar: user.avatar,
         user: req.user.id,
       });
+
       const post = await newPost.save();
-      res.json(post);
+      return res.json(post);
     } catch (err) {
       console.error(err.message);
-      return res.status(500).send('server error');
+      return res.status(500).send('Server error');
     }
   }
 );
 
-//@route   get api/post
-//@desc    get all post
-//@access  private
-router.get('/', auth, async (req, res) => {
+// @route GET api/post
+// @desc  Get all posts
+// @access Private
+router.get('/', auth, async (_req, res) => {
   try {
-    const posts = await Post.find().sort({ date: -1 }); //get most oldest  first
-    res.json(posts);
+    const posts = await Post.find().sort({ date: -1 });
+    return res.json(posts);
   } catch (err) {
     console.error(err.message);
     return res.status(500).send('server error');
   }
 });
 
-//@route   get api/post/:id
-//@desc    get one post
-//@access  private
+// @route GET api/post/:post_id
+// @desc  Get one post
+// @access Private
 router.get('/:post_id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.post_id);
-    if (!post) {
-      return res.status(404).json({ msg: 'post not found' });
-    }
-    res.json(post);
+    if (!post) return res.status(404).json({ msg: 'post not found' });
+    return res.json(post);
   } catch (err) {
     console.error(err.message);
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({ msg: 'post not found' });
-    }
+    if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'post not found' });
     return res.status(500).send('server error');
   }
 });
 
-//@route   delete api/post/:id
-//@desc    delete a  post
-//@access  private
+// @route DELETE api/post/:post_id
+// @desc  Delete a post and its media in Cloudinary (if exists)
+// @access Private
 router.delete('/:post_id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.post_id);
-    if (!post) {
-      return res.status(404).json({ msg: 'post not found' });
+    if (!post) return res.status(404).json({ msg: 'post not found' });
+
+    if (post.user.toString() !== req.user.id) return res.status(401).json({ msg: 'user not authorized' });
+
+    // Remove Cloudinary image/video if present
+    const deletePromises = [];
+    if (post.imageId) {
+      deletePromises.push(cloudinary.uploader.destroy(post.imageId, { resource_type: 'image' }));
     }
-    //check user
-    if (post.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: ' user not authorized' });
+    if (post.videoId) {
+      deletePromises.push(cloudinary.uploader.destroy(post.videoId, { resource_type: 'video' }));
     }
+    try { await Promise.all(deletePromises); } catch (e) { console.warn('Cloudinary deletion error', e?.message || e); }
+
     await post.deleteOne();
-    res.json({ msg: 'post removed' });
+    return res.json({ msg: 'post removed' });
   } catch (err) {
     console.error(err.message);
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({ msg: 'post not found' });
-    }
+    if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'post not found' });
     return res.status(500).send('server error');
   }
 });
 
-//@route   put api/post/like/:id
-//@desc    like a  post
-//@access  private
+// Likes, Unlike, Comments routes (unchanged logic)
 router.put('/like/:post_id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.post_id);
-    //check if user already like teh post or not
     if (post.likes.some((like) => like.user.toString() === req.user.id)) {
       return res.status(400).json({ msg: 'Post already liked' });
     }
-    post.likes.unshift({ user: req.user.id }); //add on the beginning
+    post.likes.unshift({ user: req.user.id });
     await post.save();
-    res.json(post.likes);
+    return res.json(post.likes);
   } catch (err) {
     console.error(err.message);
     return res.status(500).send('server error');
   }
 });
 
-//@route   PUT api/post/unlike/:post_id
-//@desc    Unlike a post
-//@access  Private
 router.put('/unlike/:post_id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.post_id);
-
-    // Check if the post has been liked by this user
     if (!post.likes.some((like) => like.user.toString() === req.user.id)) {
       return res.status(400).json({ msg: 'Post has not been liked' });
     }
-
-    // Remove like
-    const removeIndex = post.likes.findIndex(
-      (like) => like.user.toString() === req.user.id
-    );
+    const removeIndex = post.likes.findIndex((like) => like.user.toString() === req.user.id);
     post.likes.splice(removeIndex, 1);
-
     await post.save();
-    res.json(post.likes);
+    return res.json(post.likes);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    return res.status(500).send('server error');
   }
 });
 
-//@route   post api/post/comment/:id
-//@desc    add comment to the post
-//@access  private
-router.post(
-  '/comment/:id',
-  [auth, [check('text', 'text is required').not().isEmpty()]],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    try {
-      const user = await User.findById(req.user.id).select('-password'); //don't want to send password back F
-      const post = await Post.findById(req.params.id);
-      const newComment = {
-        text: req.body.text,
-        name: user.name,
-        avatar: user.avatar,
-        user: req.user.id,
-      };
-      post.comments.unshift(newComment);
-      await post.save();
-      res.json(post.comments);
-    } catch (err) {
-      console.error(err.message);
-      return res.status(500).send('server error');
-    }
-  }
-);
-
-//@route   delete api/post/comment/:postid/comment_id
-//@desc    delete comment to the post
-//@access  private
-router.delete(
-  '/comment/:postid/:comment_id',
-  [auth, check('comment_id', 'Please enter a comment id').not().isEmpty()],
-  async (req, res) => {
-    try {
-      const post = await Post.findById(req.params.postid);
-      //pull out the comment
-      const comment = post.comments.find(
-        (comment) => comment.id === req.params.comment_id
-      );
-      //make sure comments exist
-      if (!comment) {
-        return res.status(404).json({ msg: 'Comment not found' });
-      }
-      //check if user owns comment
-      if (comment.user.toString() !== req.user.id) {
-        return res
-          .status(401)
-          .json({ msg: 'Not authorized to delete comment' });
-      }
-      //remove comment
-    const removeIndex = post.comments.findIndex(
-      (comment) => comment.user.toString() === req.user.id
-    );
-    post.comments.splice(removeIndex, 1);
-
+router.post('/comment/:id', [auth, [check('text', 'text is required').not().isEmpty()]], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    const post = await Post.findById(req.params.id);
+    const newComment = {
+      text: req.body.text,
+      name: user.name,
+      avatar: user.avatar,
+      user: req.user.id,
+    };
+    post.comments.unshift(newComment);
     await post.save();
-    res.json(post.comments);
-    } catch (err) {
-      console.error(err.message);
-      return res.status(500).send('server error');
-    }
+    return res.json(post.comments);
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).send('server error');
   }
-);
+});
+
+router.delete('/comment/:postid/:comment_id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postid);
+    const comment = post.comments.find((c) => c.id === req.params.comment_id);
+    if (!comment) return res.status(404).json({ msg: 'Comment not found' });
+    if (comment.user.toString() !== req.user.id) return res.status(401).json({ msg: 'Not authorized to delete comment' });
+    post.comments = post.comments.filter((c) => c.id !== req.params.comment_id);
+    await post.save();
+    return res.json(post.comments);
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).send('server error');
+  }
+});
 
 module.exports = router;

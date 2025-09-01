@@ -70,8 +70,6 @@ const Signup = ({ setAlert, registerUser, isAuthanticated }) => {
           <p className='lead text-center'>
             <i className='fas fa-user'></i> Create Your Account
           </p>
-
-          {/* Show errors if any */}
           {errors.length > 0 && (
             <div className='error-messages'>
               {errors.map((error, idx) => (
@@ -90,7 +88,7 @@ const Signup = ({ setAlert, registerUser, isAuthanticated }) => {
                 name='name'
                 value={name}
                 onChange={onChange}
-                // required
+                required
               />
             </div>
             <div className='form-group'>
@@ -100,7 +98,7 @@ const Signup = ({ setAlert, registerUser, isAuthanticated }) => {
                 name='email'
                 value={email}
                 onChange={onChange}
-                // required
+                required
               />
               <small className='form-text'>
                 This site uses Gravatar so if you want a profile image, use a
@@ -112,10 +110,10 @@ const Signup = ({ setAlert, registerUser, isAuthanticated }) => {
                 type='password'
                 placeholder='Password'
                 name='password'
-                // minLength="6"
+                minLength="6"
                 value={password}
                 onChange={onChange}
-                // required
+                required
               />
             </div>
             <div className='form-group'>
@@ -123,10 +121,10 @@ const Signup = ({ setAlert, registerUser, isAuthanticated }) => {
                 type='password'
                 placeholder='Confirm Password'
                 name='password2'
-                // minLength="6"
+                minLength="6"
                 value={password2}
                 onChange={onChange}
-                // required
+                required
               />
             </div>
             <input type='submit' className='btn btn-primary' value='Register' />

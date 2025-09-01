@@ -16,6 +16,8 @@ import Profiles from './component/profile/Profiles';
 import Profile from './component/profile/Profile';
 import Posts from './component/post/post';
 import Post from './component/post/Singlepost';
+import Postform from './component/post/Postform';
+import Myprofile from './component/profile/myprofile';
 
 const App = () => {
   return (
@@ -23,19 +25,84 @@ const App = () => {
       <Navbar />
       <Alert />
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-       <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-       <Route path="/createprofile" element={<PrivateRoute><CreateProfile /></PrivateRoute>} />
-       <Route path="/editprofile" element={<PrivateRoute><EditProfile /></PrivateRoute>} />
-       <Route path="/addexperience" element={<PrivateRoute><AddExperience /></PrivateRoute>} />
-       <Route path="/addeducation" element={<PrivateRoute><AddEducation /></PrivateRoute>} />
-       <Route path="/posts" element={<PrivateRoute><Posts /></PrivateRoute>} />
-       <Route path="/post/:id" element={<PrivateRoute><Post /></PrivateRoute>} />
-       <Route path="/profiles" element={<Profiles />} />
-       <Route path="/profile/:id" element={<Profile />} />
+        <Route path='/' element={<Landing />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route
+          path='/dashboard'
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/createprofile'
+          element={
+            <PrivateRoute>
+              <CreateProfile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/editprofile'
+          element={
+            <PrivateRoute>
+              <EditProfile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/addexperience'
+          element={
+            <PrivateRoute>
+              <AddExperience />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/addeducation'
+          element={
+            <PrivateRoute>
+              <AddEducation />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/posts'
+          element={
+            <PrivateRoute>
+              <Posts />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/post/:id'
+          element={
+            <PrivateRoute>
+              <Post />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/create-post'
+          element={
+            <PrivateRoute>
+              <Postform />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/myprofile'
+          element={
+            <PrivateRoute>
+              <Myprofile />
+            </PrivateRoute>
+          }
+        />
 
+        <Route path='/profiles' element={<Profiles />} />
+        <Route path='/profile/:id' element={<Profile />} />
       </Routes>
     </Fragment>
   );

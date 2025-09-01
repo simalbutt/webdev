@@ -22,25 +22,9 @@ const Profile = ({ getProfileById, profile: { profile, loading }, auth }) => {
         <Spinner />
       ) : (
         <Fragment>
-          <Link
-            to='/Profiles'
-            className='btn btn-light'
-            style={{ marginTop: '8rem' }}
-          >
-            Back To Profiles
-          </Link>
-          {auth.isAuthanticated &&
-            auth.loading === false &&
-            auth.user._id === profile.user._id && (
-              <Link
-                to='/editprofile'
-                className='btn btn-dark'
-                style={{ marginTop: '8rem' }}
-              >
-                Edit Profile
-              </Link>
-            )}
+          
           <div className='profile-grid my-1'>
+           
             <ProfileTop profile={profile} />
             <Profileabout profile={profile} />
 
@@ -70,7 +54,29 @@ const Profile = ({ getProfileById, profile: { profile, loading }, auth }) => {
               {profile.githubusername && (<Profilerepo username={profile.githubusername} />)}
               
             </div>
+            <div>
+            <Link
+            to='/Profiles'
+            className='btn btn-primary'
+            style={{ marginBottom: '1rem',width:'40%' }}
+          >
+            Back To Profiles
+          </Link>
+          {auth.isAuthanticated &&
+            auth.loading === false &&
+            auth.user._id === profile.user._id && (
+              <Link
+                to='/editprofile'
+                className='btn btn-dark'
+                style={{ marginBottom: '1rem',width:'40%'  }}
+              >
+                Edit Profile
+              </Link>
+            )}
+            </div>
+
           </div>
+           
         </Fragment>
       )}
     </Fragment>

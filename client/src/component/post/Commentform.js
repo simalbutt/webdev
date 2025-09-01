@@ -7,8 +7,8 @@ const Commentform = ({postId, addComment }) => {
     const [text, settext] = useState('');
   return (
     <div className='post-form'>
-      <div className='bg-primary p'>
-        <h3>Leave a Comment</h3>
+      <div className='bg-primary p' >
+        <h3 >Leave a Comment</h3>
       </div>
       <form
         className='form my-1'

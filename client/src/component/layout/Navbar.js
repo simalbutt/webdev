@@ -8,21 +8,19 @@ const Navbar = ({ auth: { isAuthanticated, loading }, logoutUser }) => {
   const authLink = (
     <ul>
       <li>
-        <Link to='/Profiles'>
-        Developers
-        </Link>
-      </li>
-      <li>
-        <Link to='/posts'>
-        <i className="fas fa-file-alt"></i> {' '}
-        Posts
-        </Link>
-      </li>
-      <li>
         <Link to='/dashboard'>
-        <i className='fas fa-user'></i>{' '}
-       <span className='hide-sm'>Dashboard</span> </Link>
+          <span className='hide-sm'>Dashboard</span>{' '}
+        </Link>
       </li>
+      <li>
+        <Link to='/Profiles'>Developers</Link>
+      </li>
+      <li>
+        <Link to='/myprofile'>
+          <i className='fas fa-user-tie'></i> {' '} Profile
+        </Link>
+      </li>
+
       <li>
         <a onClick={logoutUser} href='#!'>
           <i className='fas fa-sign-out-alt'></i>{' '}
@@ -35,9 +33,7 @@ const Navbar = ({ auth: { isAuthanticated, loading }, logoutUser }) => {
   const guestLink = (
     <ul>
       <li>
-        <Link to='/Profiles'>
-        Developers
-        </Link>
+        <Link to='/Profiles'>Developers</Link>
       </li>
       <li>
         <Link to='/signup'>Signup</Link>
@@ -56,9 +52,7 @@ const Navbar = ({ auth: { isAuthanticated, loading }, logoutUser }) => {
         </Link>
       </h1>
       {!loading && (
-        <Fragment>
-          {isAuthanticated ? authLink : guestLink}
-        </Fragment>
+        <Fragment>{isAuthanticated ? authLink : guestLink}</Fragment>
       )}
     </nav>
   );
@@ -66,11 +60,11 @@ const Navbar = ({ auth: { isAuthanticated, loading }, logoutUser }) => {
 
 Navbar.propTypes = {
   logoutUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  auth: state.auth
+const mapStateToProps = (state) => ({
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, { logoutUser })(Navbar);

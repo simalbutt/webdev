@@ -11,11 +11,21 @@ const PostSchema = new Schema({
     required: true,
   },
   name: {
-    type: String, 
+    type: String,
   },
   avatar: {
     type: String,
   },
+  image: {
+    type: String, // Cloudinary image URL
+  },
+  imageId: {
+    type: String,
+  },
+  video: {
+    type: String // For video URL
+  },
+  videoId: { type: String },
   likes: [
     {
       user: {
@@ -30,12 +40,12 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
       },
-       name: {
-      type: String,
-    },
+      name: {
+        type: String,
+      },
       text: {
         type: String,
-        required: true, 
+        required: true,
       },
       avatar: {
         type: String,

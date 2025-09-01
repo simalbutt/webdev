@@ -1,5 +1,5 @@
 .signup-page {
-  background: url('sigup.jpg') no-repeat center center/cover;
+  background: url('../../../public/landing.jpg') no-repeat center center/cover;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
