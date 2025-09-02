@@ -10,6 +10,8 @@ import {
   ADD_POST,
   ADD_COMMENT,
   REMOVE_COMMENT,
+   MY_POSTS_SUCCESS,
+    MY_POSTS_FAIL
 } from './types';
 
 // Get posts
@@ -24,6 +26,24 @@ export const getPosts = () => async (dispatch) => {
     });
   }
 };
+
+//get myposts
+export const getMyPosts = () => async (dispatch) => {
+  try {
+    const res = await axios.get('/api/post/my-posts');
+
+    dispatch({
+      type: MY_POSTS_SUCCESS,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: MY_POSTS_FAIL,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
 
 // Add like
 export const addLike = (id) => async (dispatch) => {

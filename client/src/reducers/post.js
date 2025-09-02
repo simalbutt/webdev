@@ -7,62 +7,87 @@ import {
   GET_POST,
   ADD_COMMENT,
   REMOVE_COMMENT,
+  MY_POSTS_SUCCESS,
+  MY_POSTS_FAIL
 } from '../action/types';
 
 const initialstate = {
   posts: [],
+  myPosts: [],
   loading: true,
   error: {},
-  post: null,
+  post: null
 };
+
 export default function post(state = initialstate, action) {
   const { type, payload } = action;
+
   switch (type) {
     case GET_POSTS:
       return {
         ...state,
         posts: payload,
-        loading: false,
+        loading: false
       };
+
     case GET_POST:
       return {
         ...state,
         post: payload,
-        loading: false,
+        loading: false
       };
 
     case ADD_POST:
       return {
         ...state,
-        posts: [payload, ...state.posts],//give copy of post
-        loading: false,
+        posts: [payload, ...state.posts], // Add new post at the top
+        loading: false
       };
+
+    case MY_POSTS_SUCCESS: // ✅ When fetching user's own posts
+      return {
+        ...state,
+        myPosts: payload,
+        loading: false
+      };
+
+    case MY_POSTS_FAIL: // ✅ If error fetching user's own posts
+      return {
+        ...state,
+        myPosts: [],
+        loading: false
+      };
+
     case POST_ERROR:
       return {
         ...state,
         error: payload,
-        loading: false,
+        loading: false
       };
+
     case UPDATE_LIKES:
       return {
         ...state,
         posts: state.posts.map((post) =>
           post._id === payload.id ? { ...post, likes: payload.likes } : post
         ),
-        loading: false,
+        loading: false
       };
+
     case DELETE_POST:
       return {
         ...state,
         posts: state.posts.filter((post) => post._id !== payload),
-        loading: false,
+        loading: false
       };
+
     case ADD_COMMENT:
       return {
         ...state,
         post: { ...state.post, comments: payload },
-        loading: false,
+        loading: false
       };
+
     case REMOVE_COMMENT:
       return {
         ...state,
@@ -70,10 +95,11 @@ export default function post(state = initialstate, action) {
           ...state.post,
           comments: state.post.comments.filter(
             (comment) => comment._id !== payload
-          ),
+          )
         },
-        loading: false,
+        loading: false
       };
+
     default:
       return state;
   }

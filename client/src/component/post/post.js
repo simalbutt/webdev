@@ -15,24 +15,24 @@ const Post = ({ getPosts, post: { posts, loading }, auth }) => {
     <Spinner />
   ) : (
     <Fragment>
-      <div className="posts-page-container">
+      <div className='posts-page-container'>
         {/* LEFT SIDEBAR */}
-        <div className="sidebar">
-          <h2>Welcome</h2>
-          <p className="username">{auth?.user?.name}</p>
-          <p className="designation">Software Engineer</p>
-          <Link to="/create-post" className="btn btn-primary create-post-btn">
+        <div className='sidebar'>
+          <h2>Welcome {auth?.user?.name} </h2>
+
+          {/* <p className="designation"> {profile?.profile?.status}</p> */}
+          <Link to='/create-post' className='btn btn-primary create-post-btn'>
             Create Post
           </Link>
         </div>
 
         {/* MAIN CONTENT */}
-        <div className="posts-section">
-          <h1 className="large text-primary">Posts</h1>
-          <p className="lead">
-            <i className="fas fa-user"></i> Welcome to the community
+        <div className='posts-section'>
+          <h1 className='large text-primary'>Posts</h1>
+          <p className='lead'>
+            <i className='fas fa-user'></i> Welcome to the community
           </p>
-          <div className="posts">
+          <div className='posts'>
             {posts.map((post) => (
               <Postitem key={post._id} post={post} />
             ))}

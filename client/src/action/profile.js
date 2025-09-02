@@ -31,6 +31,24 @@ export const getCurrentProfile = () => async (dispatch) => {
   }
 };
 
+//get  my users profile
+// export const getmyProfile = () => async (dispatch) => {
+
+//   try {
+//     dispatch({ type: PROFILE_LOADING });
+//     const res = await axios.get('/api/profile/me');
+//     dispatch({
+//       type: GET_PROFILE,
+//       payload: res.data,
+//     });
+//   } catch (err) {
+//     dispatch({
+//       type: PROFILE_ERROR,
+//       payload: { msg: err.response.statusText, status: err.response.status },
+//     });
+//   }
+// };
+
 
 //get all profiles
 export const getallProfile = () => async (dispatch) => {
@@ -106,7 +124,7 @@ export const Createprofile =
   async (dispatch) => {
     try {
       const config = {
-        Headers: {
+        headers: {
           'content-type': 'application/json',
         },
       };

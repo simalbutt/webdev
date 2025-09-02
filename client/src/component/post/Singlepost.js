@@ -5,7 +5,7 @@ import Spinner from '../layout/spinner';
 import { useParams } from 'react-router-dom';
 import { getPost } from '../../action/post';
 import Postitem from './Postitem';
-import { Link } from 'react-router-dom';
+
 import Commentform from './Commentform'
 import Commentitem from './Commentitem'
 const Singlepost = ({ getPost, post: { post, loading } }) => {
@@ -18,7 +18,7 @@ const Singlepost = ({ getPost, post: { post, loading } }) => {
   ) : (
     <Fragment>
        <div className='onepost'>
-        <Link to='/posts' className='btn btn-light'>Back To Posts</Link>
+        
 
         <Postitem post={post} showactions={false} />
         <div className="comments">

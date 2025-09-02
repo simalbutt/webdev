@@ -80,6 +80,22 @@ router.get('/', auth, async (_req, res) => {
   }
 });
 
+//get all my posts 
+router.get('/my-posts', auth, async (req, res) => {
+  try {
+    const posts = await Post.find({ user: req.user.id }).sort({ date: -1 });
+
+    if (!posts || posts.length === 0) {
+      return res.status(404).json({ msg: 'No posts found for this user' });
+    }
+
+    res.json(posts);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route GET api/post/:post_id
 // @desc  Get one post
 // @access Private
@@ -94,6 +110,10 @@ router.get('/:post_id', auth, async (req, res) => {
     return res.status(500).send('server error');
   }
 });
+
+
+
+
 
 // @route DELETE api/post/:post_id
 // @desc  Delete a post and its media in Cloudinary (if exists)

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addComment } from '../../action/post';
+import { Link } from 'react-router-dom';
 
 const Commentform = ({postId, addComment }) => {
     const [text, settext] = useState('');
@@ -28,6 +29,7 @@ const Commentform = ({postId, addComment }) => {
           required
         ></textarea>
         <input type='submit' className='btn btn-dark my-1' value='Submit' />
+        <Link to='/posts' className='btn btn-primary'>Back To Posts</Link>
       </form>
     </div>
   );

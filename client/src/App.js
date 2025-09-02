@@ -18,6 +18,7 @@ import Posts from './component/post/post';
 import Post from './component/post/Singlepost';
 import Postform from './component/post/Postform';
 import Myprofile from './component/profile/myprofile';
+import Myposts from './component/post/Myposts'
 
 const App = () => {
   return (
@@ -97,6 +98,14 @@ const App = () => {
           element={
             <PrivateRoute>
               <Myprofile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/myposts'
+          element={
+            <PrivateRoute>
+              <Myposts />
             </PrivateRoute>
           }
         />
