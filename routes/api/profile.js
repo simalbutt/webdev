@@ -136,22 +136,42 @@ router.get('/user/:user_id', async (req, res) => {
     res.status(500).send('server1 error ');
   }
 });
+const cloudinary = require('../../config/cloudinary'); // your config file
 
-//@route   delete api/profile
-//@desc   delete profile/user /post
-//@access  private
+// @route   DELETE api/profile
+// @desc    Delete profile, user, posts, and Cloudinary images
+// @access  Private
 router.delete('/', auth, async (req, res) => {
   try {
-    //remove posts
+    // 1. Find all posts of the user
+    const posts = await Post.find({ user: req.user.id });
+
+    // 2. Delete Cloudinary images for each post
+    for (let post of posts) {
+      if (post.image && post.image.public_id) {
+        await cloudinary.uploader.destroy(post.image.public_id);
+      }
+    }
+
+    // 3. Find profile and delete its avatar image from Cloudinary
+    const profile = await Profile.findOne({ user: req.user.id });
+    if (profile && profile.avatar && profile.avatar.public_id) {
+      await cloudinary.uploader.destroy(profile.avatar.public_id);
+    }
+
+    // 4. Delete posts from DB
     await Post.deleteMany({ user: req.user.id });
-    //remove profile
+
+    // 5. Delete profile from DB
     await Profile.findOneAndDelete({ user: req.user.id });
-    //remove user
-    await User.findByIdAndDelete({ _id: req.user.id });
-    res.json({ msg: 'user deleted' });
+
+    // 6. Delete user from DB
+    await User.findByIdAndDelete(req.user.id);
+
+    res.json({ msg: 'User, profile, posts, and images deleted successfully' });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('server1 error ');
+    res.status(500).send('Server error');
   }
 });
 // @route    PUT api/profile/experience

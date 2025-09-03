@@ -9,7 +9,8 @@ const Navbar = ({ auth: { isAuthanticated, loading }, logoutUser }) => {
     <ul>
       <li>
         <Link to='/dashboard'>
-          <span className='hide-sm'>Dashboard</span>{' '}
+          <span className='hide-sm'></span>{' '}
+          Dashboard
         </Link>
       </li>
       <li>

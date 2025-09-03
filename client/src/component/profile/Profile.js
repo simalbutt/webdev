@@ -58,7 +58,7 @@ const Profile = ({ getProfileById, profile: { profile, loading }, auth }) => {
             <Link
             to='/Profiles'
             className='btn btn-primary'
-            style={{ marginBottom: '1rem',width:'40%' }}
+            style={{ marginBottom: '1rem' }}
           >
             Back To Profiles
           </Link>
@@ -68,7 +68,7 @@ const Profile = ({ getProfileById, profile: { profile, loading }, auth }) => {
               <Link
                 to='/editprofile'
                 className='btn btn-dark'
-                style={{ marginBottom: '1rem',width:'40%'  }}
+                style={{ marginBottom: '1rem',  }}
               >
                 Edit Profile
               </Link>

@@ -15,13 +15,13 @@ const MyPosts = ({ getMyPosts, post: { myPosts, loading } }) => {
   return loading ? (
     <Spinner />
   ) : (
-    <div className='container'>
+    <div className='onepost'>
       <h1 className='large text-primary'>My Posts</h1>
+      <Postform />
       {myPosts.length === 0 ? (
         <p>No posts found</p>
       ) : (
         <>
-          <Postform />
           {myPosts.map((post) => (
             <PostItem key={post._id} post={post} />
           ))}

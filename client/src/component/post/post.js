@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { getPosts } from '../../action/post';
 import Spinner from '../layout/spinner';
 import Postitem from './Postitem';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 const Post = ({ getPosts, post: { posts, loading }, auth }) => {
   useEffect(() => {
@@ -21,9 +21,9 @@ const Post = ({ getPosts, post: { posts, loading }, auth }) => {
           <h2>Welcome {auth?.user?.name} </h2>
 
           {/* <p className="designation"> {profile?.profile?.status}</p> */}
-          <Link to='/create-post' className='btn btn-primary create-post-btn'>
+          {/* <Link to='/create-post' className='btn btn-primary create-post-btn'>
             Create Post
-          </Link>
+          </Link> */}
         </div>
 
         {/* MAIN CONTENT */}

@@ -105,3 +105,63 @@
     transform: translateY(0);
   }
 }
+
+/* ✅ Responsive Design */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .signup-page {
+    padding: 1.5rem;
+  }
+  .signup-page .form {
+    max-width: 90%;
+    padding: 2rem;
+  }
+}
+
+/* Large Mobiles & Small Tablets */
+@media (max-width: 768px) {
+  .signup-page {
+    padding: 1.2rem;
+  }
+  .signup-page h1.large {
+    font-size: 2rem;
+    text-align: center;
+  }
+  .signup-page p.lead {
+    text-align: center;
+    font-size: 1rem;
+  }
+  .signup-page .form {
+    padding: 1.8rem 1.5rem;
+    max-width: 95%;
+  }
+}
+
+/* Small Mobiles */
+@media (max-width: 480px) {
+  .signup-page {
+    padding: 1rem;
+  }
+  .signup-page .form {
+    padding: 1.5rem 1rem;
+    max-width: 100%;
+  }
+  .signup-page h1.large {
+    font-size: 1.6rem;
+  }
+  .signup-page p.lead {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+  .signup-page .form input[type='text'],
+  .signup-page .form input[type='email'],
+  .signup-page .form input[type='password'] {
+    font-size: 0.95rem;
+    padding: 0.7rem;
+  }
+  .signup-page .btn-primary {
+    font-size: 0.95rem;
+    padding: 0.7rem;
+  }
+}

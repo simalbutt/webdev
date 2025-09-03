@@ -31,24 +31,6 @@ export const getCurrentProfile = () => async (dispatch) => {
   }
 };
 
-//get  my users profile
-// export const getmyProfile = () => async (dispatch) => {
-
-//   try {
-//     dispatch({ type: PROFILE_LOADING });
-//     const res = await axios.get('/api/profile/me');
-//     dispatch({
-//       type: GET_PROFILE,
-//       payload: res.data,
-//     });
-//   } catch (err) {
-//     dispatch({
-//       type: PROFILE_ERROR,
-//       payload: { msg: err.response.statusText, status: err.response.status },
-//     });
-//   }
-// };
-
 
 //get all profiles
 export const getallProfile = () => async (dispatch) => {
@@ -137,7 +119,7 @@ export const Createprofile =
         setAlert(edit ? 'profile updated' : 'profile created', 'success')
       );
       if (!edit) {
-        navigate('/dashboard');
+        navigate('/Myprofile');
       }
     } catch (err) {
       const errorMsg = err.response ? err.response.statusText : 'Server Error';
